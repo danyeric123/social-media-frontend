@@ -1,35 +1,40 @@
 import { Navbar, Nav, Form, Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {FaFacebookF} from 'react-icons/fa';
+import { FaFacebookF } from "react-icons/fa";
 import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <Navbar expand="lg" bg="dark" variant="dark">
+    <Navbar expand="lg" bg="primary" variant="dark">
       <Container fluid>
-        <Navbar.Brand href="#home"><FaFacebookF/></Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/">
-            Home
-          </Nav.Link>
-          <Nav.Link as={Link} to="/posts">
-            Posts
-          </Nav.Link>
-          <Nav.Link as={Link} to="/profiles">
-            Profiles
-          </Nav.Link>
-          {!isAuthenticated ? (
-            <Nav.Link as={Link} to="/login">
-              Login
+        <Navbar.Brand href="#home">
+          <FaFacebookF />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarNavAltMarkup" />
+        <Navbar.Collapse id="navbarNavAltMarkup">
+          <Nav className="mr-auto">
+            <Nav.Link as={Link} to="/">
+              Home
             </Nav.Link>
-          ):
-          <Nav.Link as={Link} to="/login" onClick={logout}>
-            Logout
-          </Nav.Link>
-        }
-        </Nav>
+            <Nav.Link as={Link} to="/posts">
+              Posts
+            </Nav.Link>
+            <Nav.Link as={Link} to="/profiles">
+              Profiles
+            </Nav.Link>
+            {!isAuthenticated ? (
+              <Nav.Link as={Link} to="/login">
+                Login
+              </Nav.Link>
+            ) : (
+              <Nav.Link as={Link} to="/login" onClick={logout}>
+                Logout
+              </Nav.Link>
+            )}
+          </Nav>
+        </Navbar.Collapse>
         <Form className="d-flex">
           <Form.Control type="text" placeholder="Search" className="mr-sm-2" />
           <Button variant="outline-info">Search</Button>

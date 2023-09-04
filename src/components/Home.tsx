@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) {
+  if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
   return <div>Home</div>;

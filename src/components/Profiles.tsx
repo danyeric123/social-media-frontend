@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 
 const Profiles = () => {
   const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) {
+  if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
   return <div>Profiles</div>;
