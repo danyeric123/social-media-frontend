@@ -28,4 +28,4 @@ export const logout = (): void => {
 
 export const setHeader = (token: string): void => {
   api.defaults.headers.common["authorization-token"] = token;
-}
+};

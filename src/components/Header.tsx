@@ -4,7 +4,7 @@ import { FaFacebookF } from "react-icons/fa";
 import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, username } = useAuth();
 
   return (
     <Navbar expand="lg" bg="primary" variant="dark">
@@ -35,8 +35,13 @@ const Header = () => {
             )}
           </Nav>
         </Navbar.Collapse>
+        {isAuthenticated() && (
+          <Navbar.Text className="mx-4">
+            Signed in as: <Link to={`/profiles/${username}`}>{username}</Link>
+          </Navbar.Text>
+        )}
         <Form className="d-flex">
-          <Form.Control type="text" placeholder="Search" className="mr-sm-2" />
+          <Form.Control type="text" placeholder="Search" className="mx-3" />
           <Button variant="outline-info">Search</Button>
         </Form>
       </Container>

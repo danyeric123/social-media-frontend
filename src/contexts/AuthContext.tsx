@@ -2,7 +2,11 @@
 
 import React, { useState } from "react";
 import { AuthContext } from "../hooks/useAuth";
-import { login as loginApi, logout as logoutApi, setHeader } from "../services/index";
+import {
+  login as loginApi,
+  logout as logoutApi,
+  setHeader,
+} from "../services/index";
 import { setLocalStorage } from "../utils";
 
 interface Props {
@@ -11,10 +15,13 @@ interface Props {
 
 export const AuthContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [, setIsAuthenticated] = useState<boolean>(false);
+  const [username, setUsername] = useState<string | undefined>(undefined);
 
   const login = async (username: string, password: string) => {
     const token = await loginApi(username, password);
     setLocalStorage("token", token);
+    setUsername(username);
+    setLocalStorage("username", username);
     setIsAuthenticated(true);
   };
 
@@ -27,21 +34,28 @@ export const AuthContextProvider: React.FC<Props> = ({ children }: Props) => {
   const checkAuth = () => {
     const token = localStorage.getItem("token");
     const tokenValue = token != null && JSON.parse(token);
-    console.log(tokenValue.expiry, Date.now())
-    if (tokenValue.expiry > Date.now()) {
+    const usernameStorage = localStorage.getItem("username");
+    const username = usernameStorage != null && JSON.parse(usernameStorage);
+    if (
+      tokenValue.expiry > Date.now() &&
+      username.value !== null &&
+      username.value !== undefined
+    ) {
       setIsAuthenticated(true);
-      console.log("tokenValue.value", tokenValue.value)
       setHeader(tokenValue.value);
+      setUsername(username.value);
       return true;
     } else {
       setIsAuthenticated(false);
+      setHeader("");
+      setUsername(undefined);
       return false;
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated: checkAuth, login, logout, setIsAuthenticated }}
+      value={{ isAuthenticated: checkAuth, login, logout, username }}
     >
       {children}
     </AuthContext.Provider>
