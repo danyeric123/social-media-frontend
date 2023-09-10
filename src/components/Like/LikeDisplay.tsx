@@ -1,6 +1,6 @@
 import { useState } from "react";
-
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+
 import LikeButton from "./LikeButton";
 import { useAuth } from "../../hooks/useAuth";
 

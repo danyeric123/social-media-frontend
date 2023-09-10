@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+
 import { Reply, replyPost } from "../../services/post";
 
 interface ReplyFormProps {
@@ -10,7 +11,7 @@ interface ReplyFormProps {
 const ReplyForm = ({ ulid, addReply }: ReplyFormProps) => {
   const [reply, setReply] = React.useState<string>("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newReply = await replyPost(ulid, reply);
     addReply(newReply);

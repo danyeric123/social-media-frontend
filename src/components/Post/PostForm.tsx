@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import React, { useState } from "react";
 import { Form, Button, FormControl, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+
 import { createPost } from "../../services/post";
 import ErrorPanel from "../ErrorPanel";
 
@@ -44,9 +46,8 @@ const PostForm = () => {
       const response = await createPost({ title, content, categories });
       navigate(`/posts/${response.ulid}`, { state: { post: response } });
     } catch (error) {
-      console.log("error");
       setIsError(true);
-      setErrorMessage(error.message);
+      setErrorMessage((error as AxiosError).message);
     }
   };
 
@@ -101,7 +102,13 @@ const PostForm = () => {
           Submit
         </Button>
       </Form>
-      {isError && <ErrorPanel error={errorMessage} showError={isError} />}
+      {isError && (
+        <ErrorPanel
+          error={errorMessage}
+          showError={isError}
+          setShowError={setIsError}
+        />
+      )}
     </>
   );
 };

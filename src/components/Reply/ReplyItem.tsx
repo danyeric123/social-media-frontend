@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Card } from "react-bootstrap";
-import { Reply } from "../../services/post";
+
 import LikeDisplay from "./../Like/LikeDisplay";
 import { useAuth } from "../../hooks/useAuth";
+import { Reply } from "../../services/post";
 import DateDisplay from "../DateDisplay";
 
 interface ReplyItemProps {

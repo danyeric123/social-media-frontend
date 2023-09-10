@@ -1,13 +1,12 @@
-import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 interface ErrorPanelProps {
   error: string;
   showError: boolean;
+  setShowError: (showError: boolean) => void;
 }
 
-const ErrorPanel = ({ error, showError: initialError }: ErrorPanelProps) => {
-  const [showError, setShowError] = useState(initialError);
+const ErrorPanel = ({ error, showError, setShowError }: ErrorPanelProps) => {
   const toggleErrorPopup = () => {
     setShowError(!showError);
   };

@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { Reply, getPost, Post as PostType } from "../services/post";
-import { Container, Card, Badge } from "react-bootstrap";
-import ReplyItem from "../components/Reply/ReplyItem";
-import LikeDisplay from "../components/Like/LikeDisplay";
 import moment from "moment";
-import { useAuth } from "../hooks/useAuth";
-import ReplyForm from "../components/Reply/ReplyForm";
+import { useEffect, useState } from "react";
+import { Container, Card, Badge } from "react-bootstrap";
+import { useParams } from "react-router";
+
 import DateDisplay from "../components/DateDisplay";
+import LikeDisplay from "../components/Like/LikeDisplay";
+import ReplyForm from "../components/Reply/ReplyForm";
+import ReplyItem from "../components/Reply/ReplyItem";
+import { useAuth } from "../hooks/useAuth";
+import { Reply, getPost, Post as PostType } from "../services/post";
 
 const Post = () => {
   const param = useParams();
