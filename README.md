@@ -2,6 +2,8 @@
 
 This is a simple React frontend project built with TypeScript, Vite, and Yarn. It is designed to be used as the frontend part of a full-stack application, where the backend is hosted in another repository.
 
+Deployed site can be found [here](https://nag-media.netlify.app/)
+
 ## Getting Started
 
 Follow the steps below to set up and start the project.
