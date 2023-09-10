@@ -144,24 +144,29 @@ const Profile = () => {
                   </Link>
                 ))}
               {user.followers !== undefined && user.followers?.length > 5 && (
-                <Link to={`/profiles/${user.username}/followers`} state={user.followers}>
+                <Link
+                  to={`/profiles/${user.username}/followers`}
+                  state={user.followers}
+                >
                   ...and {user.followers.length - 5} more
                 </Link>
               )}
             </p>
             <p>
               Following:{" "}
-              {user.following
-                ?.slice(0, 5)
-                .map((following) => (
-                  <>
+              {user.following?.slice(0, 5).map((following) => (
+                <>
                   <Link to={`/profiles/${following.username}`}>
                     {following.username}
-                  </Link>{', '}
-                  </>
-                ))}
+                  </Link>
+                  {", "}
+                </>
+              ))}
               {user.following !== undefined && user.following?.length > 5 && (
-                <Link to={`/profiles/${user.username}/following`} state={user.following}>
+                <Link
+                  to={`/profiles/${user.username}/following`}
+                  state={user.following}
+                >
                   ...and {user.following.length - 5} more
                 </Link>
               )}
@@ -169,9 +174,9 @@ const Profile = () => {
           </Col>
         </Row>
         {viewer === username && (
-          <Button variant="primary" href={`/profiles/${user.username}/edit`}>
-            Edit Profile
-          </Button>
+          <Link to={`/profiles/${user.username}/edit`} state={user}>
+            <Button variant="primary">Edit Profile</Button>
+          </Link>
         )}
         {viewer !== username &&
           viewer !== undefined &&
@@ -188,6 +193,8 @@ const Profile = () => {
           ))}
       </Container>
       <Container className="mt-4">
+        <h3>Posts</h3>
+        <hr className="divider" />
         <Row>
           {posts.map((post) => (
             <PostCard key={post.ulid} post={post} />

@@ -1,16 +1,15 @@
 import { Container, Row } from "react-bootstrap";
 import { Navigate } from "react-router";
+import { useLocation } from "react-router";
 
 import ProfileCard from "./ProfileCard";
 import { useAuth } from "../../hooks/useAuth";
 import { User } from "../../services";
 
-interface ProfileListProps {
-  users: User[];
-}
-
-const ProfileList = ({ users }: ProfileListProps) => {
+const ProfileList = () => {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
+  const users = location.state;
 
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
@@ -19,7 +18,7 @@ const ProfileList = ({ users }: ProfileListProps) => {
   return (
     <Container className="mt-4">
       <Row>
-        {users.map((user) => (
+        {users.map((user: User) => (
           <ProfileCard user={user} />
         ))}
       </Row>

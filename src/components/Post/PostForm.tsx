@@ -2,14 +2,29 @@ import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { Form, Button, FormControl, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-import { createPost } from "../../services/post";
+import { createPost, editPost } from "../../services/post";
 import ErrorPanel from "../ErrorPanel";
 
 const PostForm = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const location = useLocation();
+  const initialPost = { title: "", content: "", categories: [] };
+  if (location.state !== undefined) {
+    const {
+      title: titleProp,
+      content: contentProp,
+      categories: categoriesProp,
+    } = location.state;
+    initialPost.title = titleProp;
+    initialPost.content = contentProp;
+    initialPost.categories = categoriesProp;
+  }
+  const [title, setTitle] = useState(initialPost.title);
+  const [content, setContent] = useState(initialPost.content);
+  const [categories, setCategories] = useState<string[]>(
+    initialPost.categories,
+  );
   const [newCategory, setNewCategory] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -43,7 +58,11 @@ const PostForm = () => {
     // You can send this data to your backend or process it as needed.
 
     try {
-      const response = await createPost({ title, content, categories });
+      console.log(location.state);
+      const response =
+        location.state === undefined
+          ? await createPost({ title, content, categories })
+          : await editPost(location.state.ulid, title, content, categories);
       navigate(`/posts/${response.ulid}`, { state: { post: response } });
     } catch (error) {
       setIsError(true);

@@ -1,7 +1,8 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { Container, Card, Badge } from "react-bootstrap";
+import { Container, Card, Badge, Button } from "react-bootstrap";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 import DateDisplay from "../components/DateDisplay";
 import LikeDisplay from "../components/Like/LikeDisplay";
@@ -75,6 +76,20 @@ const Post = () => {
               toggleLike={toggleLike}
             />
           </Card.Body>
+          {username === post.author ? (
+            <Link
+              to={`/posts/${post.ulid}/edit`}
+              className="text-decoration-none text-white"
+              state={post}
+            >
+              {" "}
+              <Button variant="primary" className="mb-3">
+                Edit
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
         </Card>
         <div className="mt-4">
           <h2>Replies</h2>

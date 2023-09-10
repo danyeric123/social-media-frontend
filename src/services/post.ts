@@ -8,6 +8,7 @@ interface PostCreate {
 
 export interface Post extends PostCreate {
   ulid: string;
+  author: string;
   createdAt: string;
   updatedAt: string;
   replies: Reply[];
@@ -65,5 +66,19 @@ export const replyPost = async (
 ): Promise<Reply> => {
   const response = await api.post(`/posts/${id}/comment`, { content });
   console.log(response.data);
+  return response.data;
+};
+
+export const editPost = async (
+  id: string,
+  title: string,
+  content: string,
+  categories: string[],
+): Promise<Post> => {
+  const response = await api.put(`/posts/${id}`, {
+    title,
+    content,
+    categories,
+  });
   return response.data;
 };

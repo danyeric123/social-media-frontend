@@ -22,16 +22,16 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
               <BiUserCircle size={100} />
             )}
           </Card.Body>
-          <ListGroup className="list-group-flush">
-            <ListGroup.Item>
-              Followers:{" "}
-              {user.followers !== undefined ? user.followers.length : 0}
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Following:{" "}
-              {user.following !== undefined ? user.following.length : 0}
-            </ListGroup.Item>
-          </ListGroup>
+          {user.followers !== undefined && user.following !== undefined && (
+            <ListGroup className="list-group-flush">
+              <ListGroup.Item>
+                Followers: {user.followers.length}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                Following: {user.following.length}
+              </ListGroup.Item>
+            </ListGroup>
+          )}
         </Card>
       </Link>
     </Col>
