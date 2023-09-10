@@ -3,13 +3,18 @@ import axios from "axios";
 export const BASE_URL =
   import.meta.env.VITE_BACKEND_BASE_URL ?? "http://localhost:8080";
 
+export interface UserFollow {
+  username: string;
+  avatar?: string | File;
+}
+
 export interface User {
   username: string;
   password: string;
   avatar?: string | File;
   bio?: string;
-  following?: User[];
-  followers?: User[];
+  following?: UserFollow[];
+  followers?: UserFollow[];
 }
 
 export const api = axios.create({

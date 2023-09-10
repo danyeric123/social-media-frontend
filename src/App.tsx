@@ -10,6 +10,7 @@ import Signup from "./components/Signup";
 import Login from "./pages/Login";
 import Post from "./pages/Post";
 import Posts from "./pages/Posts";
+import ProfileList from "./components/Profile/ProfileList";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path="/posts/:id" Component={Post} />
         <Route path="/profiles" Component={Profiles} />
         <Route path="/profiles/:username" Component={Profile} />
+        <Route path="/profiles/:username/followers" Component={ProfileList} />
+        <Route path="/profiles/:username/following" Component={ProfileList} />
         <Route path="/" Component={Home} />
         <Route path="/login" Component={Login} />
         <Route path="/signup" Component={Signup} />
