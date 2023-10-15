@@ -53,7 +53,7 @@ const Posts = () => {
       <hr className="divider" />
       <Container fluid="md">
         {posts.map((post) => (
-          <PostCard post={post} />
+          <PostCard post={post} key={post.ulid} />
         ))}
       </Container>
       <hr className="divider" />

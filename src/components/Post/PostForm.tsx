@@ -10,7 +10,7 @@ import ErrorPanel from "../ErrorPanel";
 const PostForm = () => {
   const location = useLocation();
   const initialPost = { title: "", content: "", categories: [] };
-  if (location.state !== undefined) {
+  if (location.state !== undefined && location.state !== null) {
     const {
       title: titleProp,
       content: contentProp,

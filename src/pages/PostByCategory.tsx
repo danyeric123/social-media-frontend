@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Spinner } from "react-bootstrap";
+import { Navigate } from "react-router";
 import { useParams } from "react-router-dom";
 
 import PostCard from "../components/Post/PostCard";
-import { Post } from "../services/post";
-import {getPosts} from "../services/post";
 import { useAuth } from "../hooks/useAuth";
-import { Spinner } from "react-bootstrap";
-import { Navigate } from "react-router";
+import { Post } from "../services/post";
+import { getPosts } from "../services/post";
 
 const PostByCategory = () => {
   const { category } = useParams<{ category: string }>();
@@ -27,8 +27,7 @@ const PostByCategory = () => {
         setPosts(response);
         setLoading(false);
       }
-    }
-    );
+    });
   }, [category]);
 
   if (!isAuthenticated()) {
@@ -45,7 +44,6 @@ const PostByCategory = () => {
       </div>
     );
   }
-
 
   return (
     <>

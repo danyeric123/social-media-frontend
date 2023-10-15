@@ -20,6 +20,7 @@ interface ReplyCreate {
 }
 
 export interface Reply extends ReplyCreate {
+  author: string;
   ulid: string;
   createdAt: string;
   updatedAt: string;
@@ -27,9 +28,13 @@ export interface Reply extends ReplyCreate {
   replies: Reply[];
 }
 
-export const getPosts = async (category: string = ""): Promise<Post[] | void> => {
+export const getPosts = async (
+  category: string = "",
+): Promise<Post[] | void> => {
   try {
-    const response = await api.get(category == "" ? "/posts": `/posts?category=${category}`);
+    const response = await api.get(
+      category == "" ? "/posts" : `/posts?category=${category}`,
+    );
     return response.data.posts;
   } catch (error) {
     console.log(error);
@@ -80,5 +85,18 @@ export const editPost = async (
     content,
     categories,
   });
+  return response.data;
+};
+
+export const deletePost = async (id: string): Promise<Post> => {
+  const response = await api.delete(`/posts/${id}`);
+  return response.data;
+};
+
+export const deleteComment = async (
+  postId: string,
+  commentId: string,
+): Promise<Reply> => {
+  const response = await api.delete(`/posts/${postId}/comment/${commentId}`);
   return response.data;
 };

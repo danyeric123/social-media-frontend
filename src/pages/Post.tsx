@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
 import DateDisplay from "../components/DateDisplay";
+import DeleteButton from "../components/DeleteButton";
 import LikeDisplay from "../components/Like/LikeDisplay";
 import ReplyForm from "../components/Reply/ReplyForm";
 import ReplyItem from "../components/Reply/ReplyItem";
@@ -75,7 +76,12 @@ const Post = () => {
               {categories &&
                 categories.map((category, index) => (
                   <Badge key={index} bg="secondary" className="mr-2 mt-2">
-                    <Link to={`/posts/category/${category}`} style={{color: "white"}}>{category} </Link>
+                    <Link
+                      to={`/posts/category/${category}`}
+                      style={{ color: "white" }}
+                    >
+                      {category}{" "}
+                    </Link>
                   </Badge>
                 ))}
             </div>
@@ -87,16 +93,19 @@ const Post = () => {
             />
           </Card.Body>
           {username === post.author ? (
-            <Link
-              to={`/posts/${post.ulid}/edit`}
-              className="text-decoration-none text-white"
-              state={post}
-            >
-              {" "}
-              <Button variant="primary" className="mb-3">
-                Edit
-              </Button>
-            </Link>
+            <>
+              <Link
+                to={`/posts/${post.ulid}/edit`}
+                className="text-decoration-none text-white"
+                state={post}
+              >
+                {" "}
+                <Button variant="primary" className="mb-3">
+                  Edit
+                </Button>
+              </Link>
+              <DeleteButton id={post.ulid} />
+            </>
           ) : (
             <></>
           )}
@@ -105,7 +114,7 @@ const Post = () => {
         <div className="mt-4">
           <ReplyForm ulid={post.ulid} addReply={addReply} />
           {post.replies.map((reply) => (
-            <ReplyItem key={reply.ulid} reply={reply} />
+            <ReplyItem key={reply.ulid} reply={reply} postId={post.ulid} />
           ))}
         </div>
       </Container>
