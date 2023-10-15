@@ -1,6 +1,7 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Container, Card, Badge, Button } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -32,7 +33,16 @@ const Post = () => {
     fetchPost();
   }, [id]);
 
-  if (!post) return <div>Loading...</div>;
+  if (!post) {
+    return (
+      <div>
+        <Spinner animation="border" role="status" variant="primary">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const { title, content, categories, createdAt, updatedAt, likes } = post;
 
@@ -65,7 +75,7 @@ const Post = () => {
               {categories &&
                 categories.map((category, index) => (
                   <Badge key={index} bg="secondary" className="mr-2 mt-2">
-                    {category}
+                    <Link to={`/posts/category/${category}`} style={{color: "white"}}>{category} </Link>
                   </Badge>
                 ))}
             </div>
@@ -91,8 +101,8 @@ const Post = () => {
             <></>
           )}
         </Card>
+        <hr className="divider" />
         <div className="mt-4">
-          <h2>Replies</h2>
           <ReplyForm ulid={post.ulid} addReply={addReply} />
           {post.replies.map((reply) => (
             <ReplyItem key={reply.ulid} reply={reply} />

@@ -37,14 +37,13 @@ const ReplyItem: React.FC<ReplyItemProps> = ({ reply: initialReply }) => {
           ulid={reply.ulid}
           toggleLike={toggleLike}
         />
-        {reply.replies.length > 0 && (
+        {/* {reply.replies.length > 0 && (
           <div className="mt-3">
-            <h6>Replies</h6>
             {reply.replies.map((nestedReply) => (
               <ReplyItem key={nestedReply.ulid} reply={nestedReply} />
             ))}
           </div>
-        )}
+        )} */}
       </Card.Body>
     </Card>
   );

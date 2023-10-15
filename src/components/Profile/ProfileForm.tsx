@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
+
+import { editUsername } from "../../services/users";
+import ErrorPanel from "../ErrorPanel";
 
 const ProfileForm = () => {
   const location = useLocation();
@@ -22,10 +26,50 @@ const ProfileForm = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [avatar, setAvatar] = useState<File | string | undefined>("");
   const [usernameExists, setUsernameExists] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (
+      password !== confirmPassword ||
+      (!/\.(jpg|jpeg|png|gif|bmp|svg)$/i.test(avatar as string) &&
+        avatar !== "")
+    ) {
+      console.log("error");
+      return;
+    }
+    const request = {
+      username: username,
+      password: password,
+      avatar: avatar,
+    };
+    editUsername(request)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        setErrorMessage(`${error.message}: ${error.response.data.reason}`);
+        if (error.response.data.reason === "username already exists") {
+          setUsernameExists(true);
+          setErrorMessage("Username already exists");
+        }
+        setIsError(true);
+        console.log(error);
+      });
+  };
 
   return (
     <Container fluid="md">
-      <p className="subtitle">Signup for an account</p>
+      <p className="subtitle">Edit Profile</p>
+      {isError && (
+        <ErrorPanel
+          error={errorMessage}
+          showError={isError}
+          setShowError={setIsError}
+        />
+      )}
       <hr className="divider" />
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicUsername">
@@ -34,6 +78,7 @@ const ProfileForm = () => {
             type="text"
             placeholder="Enter username"
             onChange={(e) => setUsername(e.target.value)}
+            value={username}
             required
           />
           {usernameExists && (

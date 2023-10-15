@@ -21,9 +21,9 @@ function App() {
       <Routes>
         <Route path="/posts" Component={Posts} />
         <Route path="/posts/create" Component={PostForm} />
+        <Route path="/posts/category/:category" Component={PostByCategory} />
         <Route path="/posts/:id" Component={Post} />
         <Route path="/posts/:id/edit" Component={PostForm} />
-        <Route path="/posts/:category" Component={PostByCategory} />
         <Route path="/profiles" Component={Profiles} />
         <Route path="/profiles/:username" Component={Profile} />
         <Route path="/profiles/:username/followers" element={<ProfileList />} />

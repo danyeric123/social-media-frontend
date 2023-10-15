@@ -27,9 +27,9 @@ export interface Reply extends ReplyCreate {
   replies: Reply[];
 }
 
-export const getPosts = async (): Promise<Post[] | void> => {
+export const getPosts = async (category: string = ""): Promise<Post[] | void> => {
   try {
-    const response = await api.get("/posts");
+    const response = await api.get(category == "" ? "/posts": `/posts?category=${category}`);
     return response.data.posts;
   } catch (error) {
     console.log(error);
