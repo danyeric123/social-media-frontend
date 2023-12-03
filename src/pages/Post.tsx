@@ -1,15 +1,10 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import {
-  Container,
-  Card,
-  Badge,
-  Button,
-  Dropdown,
-} from "react-bootstrap";
+import { Container, Card, Badge, Button, Dropdown } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import DateDisplay from "../components/DateDisplay";
 import DeleteButton from "../components/DeleteButton";
@@ -18,12 +13,15 @@ import ReplyForm from "../components/Reply/ReplyForm";
 import ReplyItem from "../components/Reply/ReplyItem";
 import { useAuth } from "../hooks/useAuth";
 import { Reply, getPost, Post as PostType } from "../services/post";
+import { deletePost, deleteComment } from "../services/post";
 
 const Post = () => {
   const param = useParams();
   const { id } = param;
   const { username } = useAuth();
   const [post, setPost] = useState<PostType | undefined>(undefined);
+  const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate();
   moment.locale("en");
 
   useEffect(() => {
@@ -66,9 +64,41 @@ const Post = () => {
     }
   };
 
+  const handleHideForm = () => {
+    setShowForm(false);
+  };
+
   const addReply = (reply: Reply) => {
     const newReplies = [...post.replies, reply];
     setPost({ ...post, replies: newReplies });
+  };
+
+  const handleDelete = (
+    e: React.FormEvent,
+    commentId: string | undefined = undefined,
+    id: string,
+  ) => {
+    e.preventDefault();
+    if (commentId) {
+      deleteComment(id, commentId)
+        .then(() => {
+          setPost({
+            ...post,
+            replies: post.replies.filter((reply) => reply.ulid !== commentId),
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      return;
+    }
+    deletePost(id)
+      .then(() => {
+        navigate("/posts");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -127,7 +157,7 @@ const Post = () => {
                   <Dropdown.Item
                     style={{ backgroundColor: "whitesmoke", boxShadow: "none" }}
                   >
-                    <DeleteButton id={post.ulid} />
+                    <DeleteButton id={post.ulid} handleDelete={handleDelete} />
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -138,9 +168,24 @@ const Post = () => {
         </Card>
         <hr className="divider" />
         <div className="mt-4">
-          <ReplyForm ulid={post.ulid} addReply={addReply} />
+          {showForm ? (
+            <ReplyForm
+              ulid={post.ulid}
+              addReply={addReply}
+              handleHideForm={handleHideForm}
+            />
+          ) : (
+            <Button variant="primary" onClick={() => setShowForm(true)}>
+              Reply
+            </Button>
+          )}
           {post.replies.map((reply) => (
-            <ReplyItem key={reply.ulid} reply={reply} postId={post.ulid} />
+            <ReplyItem
+              key={reply.ulid}
+              reply={reply}
+              postId={post.ulid}
+              handleDelete={handleDelete}
+            />
           ))}
         </div>
       </Container>

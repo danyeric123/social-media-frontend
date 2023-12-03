@@ -112,12 +112,14 @@ export const likeComment = async (
 ): Promise<Reply> => {
   const response = await api.post(`/posts/${postId}/comment/${commentId}/like`);
   return response.data;
-}
+};
 
 export const unlikeComment = async (
   postId: string,
   commentId: string,
 ): Promise<Reply> => {
-  const response = await api.post(`/posts/${postId}/comment/${commentId}/unlike`);
+  const response = await api.post(
+    `/posts/${postId}/comment/${commentId}/unlike`,
+  );
   return response.data;
-}
+};

@@ -1,6 +1,11 @@
 import { AiTwotoneLike, AiTwotoneDislike } from "react-icons/ai";
 
-import { likeComment, likePost, unlikeComment, unlikePost } from "../../services/post";
+import {
+  likeComment,
+  likePost,
+  unlikeComment,
+  unlikePost,
+} from "../../services/post";
 
 interface LikeButtonProps {
   id: string;
@@ -9,13 +14,20 @@ interface LikeButtonProps {
   commentId?: string;
 }
 
-const LikeButton = ({ id, isLiked, toggleLike, commentId }: LikeButtonProps) => {
+const LikeButton = ({
+  id,
+  isLiked,
+  toggleLike,
+  commentId,
+}: LikeButtonProps) => {
   // TODO: Implement like/unlike functionality for replies
   const handleLike = async () => {
-    if (commentId){
-      !isLiked ? await likeComment(id, commentId) : await unlikeComment(id, commentId);
-      console.log("like comment", commentId)
-    }else{
+    if (commentId) {
+      !isLiked
+        ? await likeComment(id, commentId)
+        : await unlikeComment(id, commentId);
+      console.log("like comment", commentId);
+    } else {
       !isLiked ? await likePost(id) : await unlikePost(id);
     }
     toggleLike(isLiked);

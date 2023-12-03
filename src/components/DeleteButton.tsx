@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 
 import DeleteConfirmationModal from "./DeleteModal";
-import { deletePost, deleteComment } from "../services/post";
 
 interface DeleteProps {
   id: string;
   commentId?: string;
+  handleDelete: (
+    e: React.FormEvent,
+    commentId: string | undefined,
+    id: string,
+  ) => void;
 }
 
-const DeleteButton = ({ id, commentId }: DeleteProps) => {
-  const navigate = useNavigate();
+const DeleteButton = ({ id, commentId, handleDelete }: DeleteProps) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -20,29 +22,6 @@ const DeleteButton = ({ id, commentId }: DeleteProps) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-  };
-
-  const handleDelete = () => {
-    if (commentId) {
-      console.log("delete comment", commentId);
-
-      deleteComment(id, commentId)
-        .then(() => {
-          setShowModal(false);
-          window.location.reload();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      return;
-    }
-    deletePost(id)
-      .then(() => {
-        navigate("/posts");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   return (
@@ -57,7 +36,10 @@ const DeleteButton = ({ id, commentId }: DeleteProps) => {
       <DeleteConfirmationModal
         show={showModal}
         onHide={handleCloseModal}
-        onDelete={handleDelete}
+        onDelete={(e: React.FormEvent): void => {
+          handleDelete(e, commentId, id);
+          setShowModal(false);
+        }}
       />
     </>
   );
