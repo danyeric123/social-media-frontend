@@ -8,9 +8,10 @@ interface LikeProps {
   likes: string[];
   ulid: string;
   toggleLike: (isLiked: boolean) => void;
+  commentId?: string;
 }
 
-const LikeDisplay = ({ likes, ulid, toggleLike }: LikeProps) => {
+const LikeDisplay = ({ likes, ulid, toggleLike, commentId }: LikeProps) => {
   const [likesTooltip, setLikesTooltip] = useState(false);
   const { username } = useAuth();
 
@@ -41,6 +42,7 @@ const LikeDisplay = ({ likes, ulid, toggleLike }: LikeProps) => {
             id={ulid}
             isLiked={username !== undefined ? likes.includes(username) : false}
             toggleLike={toggleLike}
+            commentId={commentId}
           />
           <span className="mx-3">Likes: {likes.length} </span>
         </>

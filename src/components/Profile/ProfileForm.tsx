@@ -3,7 +3,7 @@ import { Container, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 
-import { editUsername } from "../../services/users";
+import { editUser } from "../../services/users";
 import ErrorPanel from "../ErrorPanel";
 
 const ProfileForm = () => {
@@ -45,7 +45,7 @@ const ProfileForm = () => {
       password: password,
       avatar: avatar,
     };
-    editUsername(request)
+    editUser(initialProfile.username, request)
       .then(() => {
         navigate("/");
       })

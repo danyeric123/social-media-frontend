@@ -1,6 +1,12 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { Container, Card, Badge, Button } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Badge,
+  Button,
+  Dropdown,
+} from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -94,17 +100,37 @@ const Post = () => {
           </Card.Body>
           {username === post.author ? (
             <>
-              <Link
-                to={`/posts/${post.ulid}/edit`}
-                className="text-decoration-none text-white"
-                state={post}
-              >
-                {" "}
-                <Button variant="primary" className="mb-3">
-                  Edit
-                </Button>
-              </Link>
-              <DeleteButton id={post.ulid} />
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="light"
+                  id="dropdown-basic"
+                  className="bg-transparent border-0"
+                >
+                  <i className="fas fa-ellipsis-h"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{ backgroundColor: "whitesmoke", boxShadow: "none" }}
+                >
+                  <Dropdown.Item
+                    style={{ backgroundColor: "whitesmoke", boxShadow: "none" }}
+                  >
+                    <Link
+                      to={`/posts/${post.ulid}/edit`}
+                      className="text-decoration-none text-white"
+                      state={post}
+                    >
+                      <Button variant="primary" className="mb-3">
+                        Edit
+                      </Button>
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    style={{ backgroundColor: "whitesmoke", boxShadow: "none" }}
+                  >
+                    <DeleteButton id={post.ulid} />
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </>
           ) : (
             <></>

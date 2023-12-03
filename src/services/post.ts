@@ -17,6 +17,7 @@ export interface Post extends PostCreate {
 
 interface ReplyCreate {
   content: string;
+  parent_ulid?: string;
 }
 
 export interface Reply extends ReplyCreate {
@@ -68,8 +69,12 @@ export const unlikePost = async (id: string): Promise<Post> => {
 export const replyPost = async (
   id: string,
   content: string,
+  parent_ulid: string = "",
 ): Promise<Reply> => {
-  const response = await api.post(`/posts/${id}/comment`, { content });
+  const response = await api.post(`/posts/${id}/comment`, {
+    content,
+    parent_ulid,
+  });
   console.log(response.data);
   return response.data;
 };
@@ -100,3 +105,19 @@ export const deleteComment = async (
   const response = await api.delete(`/posts/${postId}/comment/${commentId}`);
   return response.data;
 };
+
+export const likeComment = async (
+  postId: string,
+  commentId: string,
+): Promise<Reply> => {
+  const response = await api.post(`/posts/${postId}/comment/${commentId}/like`);
+  return response.data;
+}
+
+export const unlikeComment = async (
+  postId: string,
+  commentId: string,
+): Promise<Reply> => {
+  const response = await api.post(`/posts/${postId}/comment/${commentId}/unlike`);
+  return response.data;
+}

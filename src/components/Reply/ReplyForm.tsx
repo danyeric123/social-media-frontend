@@ -5,15 +5,17 @@ import { Reply, replyPost } from "../../services/post";
 
 interface ReplyFormProps {
   ulid: string;
+  parent_ulid?: string;
   addReply: (reply: Reply) => void;
 }
 
-const ReplyForm = ({ ulid, addReply }: ReplyFormProps) => {
+const ReplyForm = ({ ulid, addReply, parent_ulid }: ReplyFormProps) => {
   const [reply, setReply] = React.useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newReply = await replyPost(ulid, reply);
+    const newReply = await replyPost(ulid, reply, parent_ulid ? parent_ulid : "");
+    setReply("");
     addReply(newReply);
   };
 

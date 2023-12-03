@@ -8,6 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Reply } from "../../services/post";
 import DateDisplay from "../DateDisplay";
 import DeleteButton from "../DeleteButton";
+import ReplyForm from "./ReplyForm";
 
 interface ReplyItemProps {
   reply: Reply;
@@ -21,6 +22,7 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
   const [reply, setReply] = useState<Reply>(initialReply);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(reply.content); // Edited content
+  const [showForm, setShowForm] = useState(false);
   const { username } = useAuth();
 
   const toggleLike = (isLiked: boolean) => {
@@ -48,8 +50,20 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
     setEditing(false);
   };
 
+  const handleShowForm = () => {
+    setShowForm(true);
+  }
+
+  const addReply = (reply: Reply) => {
+    console.log(reply)
+    setReply({ ...reply, replies: reply.replies ? [...reply.replies, reply] : [reply] });
+  }
+
   return (
-    <Card className="mt-3">
+    <>
+    <Card className="mt-3"
+      onClick={handleShowForm}
+    >
       <Card.Body className="d-flex justify-content-between">
         <div>
           {!editing ? (
@@ -76,29 +90,39 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
             likes={reply.likes}
             ulid={reply.ulid}
             toggleLike={toggleLike}
+            commentId={reply.ulid}
           />
-          {/* {reply.replies.length > 0 && (
+          {reply.replies && reply.replies.length > 0 && (
             <div className="mt-3">
               {reply.replies.map((nestedReply) => (
-                <ReplyItem key={nestedReply.ulid} reply={nestedReply} />
+                <ReplyItem key={nestedReply.ulid} reply={nestedReply} postId={postId}/>
               ))}
             </div>
-          )} */}
+          )}
         </div>
         {username === reply.author && (
           <Dropdown>
             <Dropdown.Toggle variant="light" id="dropdown-basic">
-              ...
+              <i className="fas fa-ellipsis-h"></i>
             </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item>
+            <Dropdown.Menu style={{ backgroundColor: "whitesmoke", boxShadow: "none" }}>
+              <Dropdown.Item
+                style={{ backgroundColor: "whitesmoke", boxShadow: "none" }}
+              >
                 <DeleteButton commentId={reply.ulid} id={postId} />
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )}
       </Card.Body>
+      {showForm && (
+        <>
+          <ReplyForm ulid={postId} addReply={addReply} parent_ulid={reply.ulid} />
+        </>
+        )
+      }
     </Card>
+      </>
   );
 };
 
