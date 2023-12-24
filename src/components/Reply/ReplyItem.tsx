@@ -57,6 +57,7 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
   };
 
   const handleShowForm = () => {
+    console.log(reply.content);
     setShowForm(true);
   };
 
@@ -74,9 +75,13 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
 
   return (
     <>
-      <Card className="mt-3">
+      <Card
+        className="mt-3"
+        style={{ backgroundColor: "#F0F2F5", borderRadius: "2%" }}
+      >
         <Card.Body className="d-flex justify-content-between">
-          <div onClick={handleShowForm}>
+          <div>
+            <Card.Title>{reply.author}</Card.Title>
             {!editing ? (
               <Card.Text onClick={handleClick}>{reply.content}</Card.Text>
             ) : (
@@ -93,28 +98,13 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
                 </Button>
               </div>
             )}
-            <DateDisplay
-              createdAt={reply.createdAt}
-              updatedAt={reply.updatedAt}
-            />
+
             <LikeDisplay
               likes={reply.likes}
               ulid={reply.ulid}
               toggleLike={toggleLike}
               commentId={reply.ulid}
             />
-            {reply.replies && reply.replies.length > 0 && (
-              <div className="mt-3">
-                {reply.replies.map((nestedReply) => (
-                  <ReplyItem
-                    key={nestedReply.ulid}
-                    reply={nestedReply}
-                    postId={postId}
-                    handleDelete={handleDelete}
-                  />
-                ))}
-              </div>
-            )}
           </div>
           {username === reply.author && (
             <Dropdown>
@@ -137,17 +127,34 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
             </Dropdown>
           )}
         </Card.Body>
-        {showForm && (
-          <>
-            <ReplyForm
-              ulid={postId}
-              addReply={addReply}
-              parent_ulid={reply.ulid}
-              handleHideForm={handleHideForm}
-            />
-          </>
-        )}
       </Card>
+      <DateDisplay createdAt={reply.createdAt} updatedAt={reply.updatedAt} />
+      {!showForm ? (
+        <Card.Link style={{ padding: "1rem" }} onClick={handleShowForm}>
+          Reply
+        </Card.Link>
+      ) : (
+        <>
+          <ReplyForm
+            ulid={postId}
+            addReply={addReply}
+            parent_ulid={reply.ulid}
+            handleHideForm={handleHideForm}
+          />
+        </>
+      )}
+      {reply.replies && reply.replies.length > 0 && (
+        <div className="ps-5">
+          {reply.replies.map((nestedReply) => (
+            <ReplyItem
+              key={nestedReply.ulid}
+              reply={nestedReply}
+              postId={postId}
+              handleDelete={handleDelete}
+            />
+          ))}
+        </div>
+      )}
     </>
   );
 };

@@ -7,7 +7,7 @@ interface DateDisplayProps {
 
 const DateDisplay = ({ createdAt, updatedAt }: DateDisplayProps) => {
   return (
-    <div className="mt-3">
+    <div style={{ color: "#959699" }}>
       <small>
         Created: {moment(createdAt).format("MMM D, YYYY h:mm A")} | Updated:{" "}
         {moment(updatedAt).format("MMM D, YYYY h:mm A")}
