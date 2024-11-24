@@ -106,7 +106,8 @@ const Post = () => {
       <Container>
         <h1 className="mt-5">{title}</h1>
         <Card className="mt-4">
-          <Card.Body>
+          <Card.Body className="d-flex justify-content-between">
+            <div>
             <Card.Text>{content}</Card.Text>
             <div>
               {categories &&
@@ -121,13 +122,12 @@ const Post = () => {
                   </Badge>
                 ))}
             </div>
-            <DateDisplay createdAt={createdAt} updatedAt={updatedAt} />
             <LikeDisplay
               likes={likes}
               ulid={post.ulid}
               toggleLike={toggleLike}
             />
-          </Card.Body>
+            </div>
           {username === post.author ? (
             <>
               <Dropdown>
@@ -165,7 +165,9 @@ const Post = () => {
           ) : (
             <></>
           )}
+          </Card.Body>
         </Card>
+        <DateDisplay createdAt={createdAt} updatedAt={updatedAt} />
         <hr className="divider" />
         <div className="mt-4">
           {showForm ? (

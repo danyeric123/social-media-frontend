@@ -66,7 +66,7 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
   };
 
   const addReply = (reply: Reply) => {
-    console.log(reply);
+    console.log(`Adding ${reply}`);
     setReply({
       ...reply,
       replies: reply.replies ? [...reply.replies, reply] : [reply],

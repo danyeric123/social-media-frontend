@@ -27,7 +27,8 @@ const ReplyForm = ({
       parent_ulid ? parent_ulid : "",
     );
     setReply("");
-    addReply(newReply);
+    addReply(newReply.replies);
+    handleHideForm();
   };
 
   return (
